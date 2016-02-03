@@ -1,11 +1,10 @@
 package com.kschenker.validation.tests;
 
 import com.kschenker.validation.Validator;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
 
 /**
  * Author: Kevin Schenker
@@ -16,7 +15,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ValidatorTest
 {
-
     @Test
     public void testIsNullOrEmpty() throws Exception
     {
@@ -73,4 +71,5 @@ public class ValidatorTest
         assertThat(Validator.isSameObject(first, second), is(true));
         assertThat(Validator.isSameObject(second, first), is(true));
     }
+
 }
