@@ -1,8 +1,6 @@
 package com.kschenker.validation;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
 
 /**
  * Author: Kevin Schenker
