@@ -1,6 +1,9 @@
 package com.kschenker.validation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Author: Kevin Schenker
@@ -26,13 +29,32 @@ public class Validator
         return aCollection == null || aCollection.isEmpty();
     }
 
-    public static boolean isSameObject(Object first, Object second)
+    public static boolean isSameObject(Object anObject, Object anotherObject)
     {
-        if (first == null || second == null)
+        if (anObject == null || anotherObject == null)
         {
             return false;
         }
 
-        return first == second;
+        return anObject == anotherObject;
     }
+
+    public static boolean haveSameObjectReferences(List<?> aList, List<?> anotherList)
+    {
+        if (aList == null || anotherList == null)
+        {
+            return false;
+        }
+
+        if (aList.size() != anotherList.size())
+        {
+            return false;
+        }
+
+        List<?> copyOfAnotherList = new ArrayList<>(anotherList);
+        return false;
+
+    }
+
+
 }

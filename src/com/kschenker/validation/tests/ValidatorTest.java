@@ -3,7 +3,11 @@ package com.kschenker.validation.tests;
 import com.kschenker.validation.Validator;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.CoreMatchers.is;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -16,18 +20,30 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ValidatorTest
 {
     @Test
-    public void testIsNullOrEmpty() throws Exception
+    public void isNullOrEmpty_ReturnTrueIfCollectionIsNull() throws Exception
     {
-        assertThat("Not implemented yet", false);
-
+        Collection<String> aCollection = null;
+        assertThat(Validator.isNullOrEmpty(aCollection), is(true));
     }
 
+    @Test
+    public void isNullOrEmpty_ReturnTrueIfCollectionIsEmpty() throws Exception
+    {
+        Collection<String> aCollection = Arrays.asList();
+        Collection<Double> anotherCollection = Arrays.asList();
+
+        assertThat(Validator.isNullOrEmpty(aCollection), is(true));
+        assertThat(Validator.isNullOrEmpty(anotherCollection), is(true));
+    }
 
     @Test
-    public void isNullOrEmpty_FeatureToTest() throws Exception
+    public void isNullOrEmpty_ReturnFalseIfCollectionHasAtLeastOneElement() throws Exception
     {
-        assertThat("Not implemented yet", false);
+        Collection<String> stringCollection = Arrays.asList("a");
+        Collection<Double> doubleCollection = Arrays.asList(1d, 2d, 3d);
 
+        assertThat(Validator.isNullOrEmpty(stringCollection), is(false));
+        assertThat(Validator.isNullOrEmpty(doubleCollection), is(false));
     }
 
     @Test
