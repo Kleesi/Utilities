@@ -1,13 +1,14 @@
 package com.kschenker.collections.tests;
 
 import com.kschenker.collections.CollectionUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -67,5 +68,36 @@ public class CollectionUtilsTest
         List<String> aStringList = Arrays.asList(firstString, secondString);
 
         assertThat(CollectionUtils.containsObjectReference(aStringList, aStringNotContainedInList), is(false));
+    }
+
+    @Test(dataProvider = "DataProvider_containsObjectReference")
+    public void containsObjectReference_ReturnPredefinedResultWithPredefinedData(List<?> aList, Object anObject,
+                                                                                 boolean result) throws Exception
+    {
+        assertThat(CollectionUtils.containsObjectReference(aList, anObject), is(result));
+    }
+
+    @DataProvider(name = "DataProvider_containsObjectReference")
+    public static Object[][] provideData_containsObjectReference()
+    {
+        String firstString = "first";
+        String secondString = "second";
+        String thirdString = "third";
+
+        Double firstDouble = 1d;
+        Double secondDouble = 2d;
+        Double aDoubleWithValueOfFirstDouble = new Double(firstDouble);
+
+        assert firstDouble != aDoubleWithValueOfFirstDouble : "Precondition failed: Double objects must be different";
+
+        return new Object[][] {
+                { Arrays.asList(firstString, secondString, firstString), firstString, true },
+                { Arrays.asList(firstString, secondString, firstString), thirdString, false },
+                { Arrays.asList(firstDouble, secondDouble), aDoubleWithValueOfFirstDouble, false },
+                { Arrays.asList(firstDouble, secondDouble), null, false },
+                { Arrays.asList(firstDouble, secondDouble, null), null, true },
+                { null, firstDouble, false },
+                { null, null, false },
+                };
     }
 }
