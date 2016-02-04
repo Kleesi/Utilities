@@ -6,9 +6,12 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -99,5 +102,68 @@ public class CollectionUtilsTest
                 { null, firstDouble, false },
                 { null, null, false },
                 };
+    }
+
+    @Test
+    public void removeObjectReference_DoNothingWhenListIsNull() throws Exception
+    {
+        CollectionUtils.removeObjectReference(null, null);
+        CollectionUtils.removeObjectReference(null, "");
+        CollectionUtils.removeObjectReference(null, 3);
+    }
+
+    @Test
+    public void removeObjectReference_DoNothingWhenObjectNotContainedInList() throws Exception
+    {
+        String firstString = "first";
+        String secondString = "second";
+        String stringNotContainedInList = "third";
+
+        List<String> stringList = Arrays.asList(firstString, secondString);
+        List<String> copyOfStringList = new ArrayList<>(stringList);
+
+        CollectionUtils.removeObjectReference(stringList, stringNotContainedInList);
+        assertThat(stringList, equalTo(copyOfStringList));
+    }
+
+    @Test
+    public void removeObjectReference_RemoveAtMostOneObjectReferenceWhenContainedInList() throws Exception
+    {
+        String stringContainedTwiceInList = "twice";
+        String stringContainedOnceInList = "once";
+
+        List<String> stringList = new ArrayList<>();
+        stringList.add(stringContainedTwiceInList);
+        stringList.add(stringContainedOnceInList);
+        stringList.add(stringContainedTwiceInList);
+        List<String> copyOfStringList = new ArrayList<>(stringList);
+
+        CollectionUtils.removeObjectReference(stringList, stringContainedTwiceInList);
+        assertThat(stringList, not(equalTo(copyOfStringList)));
+        assertThat(stringList.size(), equalTo(copyOfStringList.size() - 1));
+        assertThat(null, stringList.get(0) == stringContainedOnceInList);
+        assertThat(null, stringList.get(1) == stringContainedTwiceInList);
+
+        CollectionUtils.removeObjectReference(stringList, stringContainedTwiceInList);
+        assertThat(stringList.size(), equalTo(copyOfStringList.size() - 2));
+        assertThat(null, stringList.get(0) == stringContainedOnceInList);
+    }
+
+    @Test
+    public void removeObjectReference_RemoveNullWhenContainedInList() throws Exception
+    {
+        String firstString = "first";
+        String secondString = "second";
+        List<String> stringList = new ArrayList<>();
+        stringList.add(firstString);
+        stringList.add(null);
+        stringList.add(secondString);
+        List<String> copyOfStringList = new ArrayList<>(stringList);
+
+        CollectionUtils.removeObjectReference(stringList, null);
+        assertThat(stringList, not(equalTo(copyOfStringList)));
+        assertThat(stringList.size(), equalTo(copyOfStringList.size() - 1));
+        assertThat(null, stringList.get(0) == firstString);
+        assertThat(null, stringList.get(1) == secondString);
     }
 }

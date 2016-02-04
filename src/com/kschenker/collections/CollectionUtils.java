@@ -33,4 +33,22 @@ public class CollectionUtils
 
         return false;
     }
+
+    public static void removeObjectReference(List<?> aList, Object anObject)
+    {
+        if (aList == null)
+        {
+            return;
+        }
+
+        for (int index = 0; index < aList.size(); index++)
+        {
+            Object anElement = aList.get(index);
+            if (anElement == anObject)
+            {
+                aList.remove(index);
+                return;
+            }
+        }
+    }
 }

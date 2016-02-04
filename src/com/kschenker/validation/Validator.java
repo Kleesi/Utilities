@@ -1,5 +1,7 @@
 package com.kschenker.validation;
 
+import com.kschenker.collections.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,9 +54,17 @@ public class Validator
         }
 
         List<?> copyOfAnotherList = new ArrayList<>(anotherList);
-        return false;
+        for (Object anObject : aList)
+        {
+            if (CollectionUtils.containsObjectReference(copyOfAnotherList, anObject))
+            {
+                //TODO
+            }
+        }
 
-    }
+
+        return true;
+}
 
 
 }
